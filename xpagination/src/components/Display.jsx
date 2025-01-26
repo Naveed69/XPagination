@@ -36,13 +36,15 @@ const Display = () => {
       <div className={styles.container}>
         <h1>Empoyee Data Table</h1>
         <table>
-          <tbody>
+          <thead>
             <tr>
               <th>Id</th>
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
             </tr>
+          </thead>
+          <tbody>
             {currentEmployee.map((data) => {
               return (
                 <tr key={data.id}>
