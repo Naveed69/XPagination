@@ -4,10 +4,10 @@ const Display = () => {
   const [employee, setEmployee] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [currentEmployee, setCurrentEmployee] = useState([]);
-  const totalPages = Math.ceil(employee.length % 8);
+  const totalPages = Math.ceil(employee.length % 10);
   useEffect(() => {
-    const endIndex = 8 * currentPage;
-    const startIndex = endIndex - 8;
+    const endIndex = 10 * currentPage;
+    const startIndex = endIndex - 10;
     setCurrentEmployee(employee.slice(startIndex, endIndex));
   }, [currentPage]);
   useEffect(() => {
