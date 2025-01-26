@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
-
+import styles from "./Display.module.css";
 const Display = () => {
   const [employee, setEmployee] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentEmployee, setCurrentEmployee] = useState([]);
+  const totalPages = Math.ceil(employee.length % 8);
+  useEffect(() => {
+    const endIndex = 8 * currentPage;
+    const startIndex = endIndex - 8;
+    setCurrentEmployee(employee.slice(startIndex, endIndex));
+  }, [currentPage]);
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -10,26 +18,60 @@ const Display = () => {
         );
         const jsonData = await response.json();
         setEmployee(jsonData);
+        setCurrentPage(1);
       } catch (e) {
         console.error(e);
       }
     };
     fetchApi();
   }, []);
-  console.log(employee);
+  const setPageNext = () => {
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+  };
+  const setPagePrev = () => {
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
   return (
     <>
-      <h1>Empoyee Data Table</h1>
-      <table>
-        <tbody>
-          <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Role</th>
-          </tr>
-        </tbody>
-      </table>
+      <div className={styles.container}>
+        <h1>Empoyee Data Table</h1>
+        <table>
+          <tbody>
+            <tr>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+            </tr>
+            {currentEmployee.map((data) => {
+              return (
+                <tr key={data.id}>
+                  <td>{data.id}</td>
+                  <td>{data.name}</td>
+                  <td>{data.email}</td>
+                  <td>{data.role}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <div className={styles.paginationButtons}>
+          <div>
+            {" "}
+            <button type="button" onClick={setPagePrev}>
+              Previous
+            </button>
+          </div>
+          <div>
+            <p>{currentPage}</p>
+          </div>
+          <div>
+            <button type="button" onClick={setPageNext}>
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
