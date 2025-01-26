@@ -20,7 +20,7 @@ const Display = () => {
         setEmployee(jsonData);
         setCurrentPage(1);
       } catch (e) {
-        console.error(e);
+        console.error("failed to fetch data");
       }
     };
     fetchApi();
